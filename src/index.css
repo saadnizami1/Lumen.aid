@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background-color: #0f1114;
+}
+
+/* Native smooth anchor scrolling only when Lenis is not driving the page
+   and the user hasn't asked for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  @apply bg-night font-sans text-cream antialiased;
+}
+
+::selection {
+  background-color: #c63d3d;
+  color: #ffffff;
+}
+
+/* Visible focus for keyboard users — never remove. currentColor keeps the
+   ring visible on every section background (teal, blue, cream, night). */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Sections receive programmatic focus after in-page navigation so screen
+   reader / keyboard context follows the visual jump — but that focus
+   shouldn't paint a ring around the whole viewport. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+@layer components {
+  /* Color is inherited so kickers work on any section background. */
+  .kicker {
+    @apply block text-[11px] font-semibold uppercase tracking-[0.35em];
+  }
+
+  .pill {
+    @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition-colors;
+  }
+
+  .link-underline {
+    @apply relative transition-opacity hover:opacity-100 focus-visible:opacity-100;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-current transition-transform duration-300;
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    @apply origin-left scale-x-100;
+  }
+}
+
+/* Fixed header: visually hidden until the reader scrolls past the opening
+   scene, but always in the DOM and forced visible the moment anything inside
+   it receives keyboard focus. */
+.site-nav {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+.site-nav[data-hidden='true'] {
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  pointer-events: none;
+}
+.site-nav[data-hidden='true']:focus-within {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-nav {
+    transition: none;
+  }
+}
+
+/* Chalk-grain overlay — decorative, pointer-transparent. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
