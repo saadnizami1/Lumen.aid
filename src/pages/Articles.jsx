@@ -1,7 +1,15 @@
 import { Link } from 'react-router-dom'
 import { ARTICLES, MEDIUM_URL, readingMinutes } from '../content/articles'
+import { useSeo } from '../hooks/useSeo'
 
 export default function Articles() {
+  useSeo({
+    title: 'The reading room',
+    description:
+      'Plain language explainers on the conditions behind vision loss, written by the Lumen.aid team.',
+    path: '/articles',
+  })
+
   return (
     <div className="min-h-svh bg-cream px-5 pb-24 pt-28 text-night md:px-10 md:pt-36">
       <div className="mx-auto max-w-3xl">

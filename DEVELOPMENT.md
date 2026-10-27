@@ -16,6 +16,41 @@ Deploys anywhere static (Vercel / Netlify / Cloudflare Pages): build command
 `npm run build`, output directory `dist`. SPA fallbacks are included (`vercel.json` for
 Vercel, `public/_redirects` for Netlify) so deep links work on refresh.
 
+## Domain
+
+The site lives at **https://lumenaid.help** (registered at Namecheap). The origin is
+declared once in `src/site.js` as `SITE_URL`; canonical links, Open Graph URLs and the
+sitemap all read from it, so changing the domain is a one-line edit.
+
+- `index.html` carries the site-wide canonical / Open Graph defaults (what crawlers that
+  do not run JavaScript see). The OG image is the logo at `/media/svg.png`, 512 square;
+  dropping in a 1200x630 `public/og-image.png` and pointing `og:image` at it would give
+  wide link previews instead of small square ones.
+- `src/hooks/useSeo.js` sets the per-page description, canonical and OG tags at runtime.
+  Every page calls it; new pages should too.
+- `public/robots.txt` points at the sitemap. `sitemap.xml` is generated at build time by
+  the `lumenaid-sitemap` plugin in `vite.config.js`, straight from the route list and
+  `ARTICLES`, so new articles appear in it with no manual edit.
+
+DNS lives at Namecheap (Advanced DNS tab, nameservers stay as Namecheap BasicDNS). Add
+`lumenaid.help` and `www.lumenaid.help` in the Vercel project's Settings > Domains first,
+then copy the two records it shows into Namecheap:
+
+| Type | Host | Value |
+|---|---|---|
+| A | `@` | the IP on the domain card (`76.76.21.21`, or `216.198.79.1` on newer projects) |
+| CNAME | `www` | the host on the domain card (often a project-specific `*.vercel-dns-0NN.com.`) |
+
+Vercel assigns these per project, so the domain card is the source of truth; copying
+another project's values is the usual cause of "Invalid Configuration". Delete the
+parking records Namecheap ships with (the `@` A record to `162.255.119.36` and the `www`
+CNAME to `parkingpage.namecheap.com`) or the domain keeps resolving to the "for sale"
+page. Set `www` to redirect to the apex in Vercel, since the canonical URLs assume apex.
+
+Namecheap's free email forwarding (Domain tab > Redirect Email) can point something like
+`hello@lumenaid.help` at the existing Gmail without touching the Vercel records, as long
+as the MX records stay on Namecheap's `mail.privateemail.com` default.
+
 Note: if the dev server is running when `tailwind.config.js` changes, restart it or you'll
 see "class does not exist" overlay errors.
 
@@ -56,7 +91,8 @@ Permanent Marker (headlines), Fraunces (serif statements + article body), Poppin
 - "youth led" unhyphenated.
 - No decorative line/stroke elements (scribbles, dividers, kicker dashes were removed).
 - No visible dev-note chips; the site must always look publishable.
-- Browser tab title is just "Lumen.aid" on every page.
+- Browser tab title is just "Lumen.aid" on every page. `useSeo` enforces this;
+  `PER_PAGE_TAB_TITLES` in `src/hooks/useSeo.js` flips it if that ever changes.
 
 ## Accessibility contract (keep this true when editing)
 

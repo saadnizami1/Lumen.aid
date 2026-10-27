@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import { ARTICLES, MEDIUM_URL, readingMinutes } from '../content/articles'
+import { useSeo } from '../hooks/useSeo'
 
 /**
  * The reader. Kindle-style: a calm paper page, a comfortable measure,
@@ -30,6 +31,8 @@ function store(key, value) {
 }
 
 function Reader({ article }) {
+  useSeo({ title: article.title, description: article.dek, path: `/articles/${article.slug}` })
+
   const index = ARTICLES.indexOf(article)
   const prev = ARTICLES[index - 1]
   const next = ARTICLES[index + 1]

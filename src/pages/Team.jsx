@@ -1,4 +1,5 @@
 import EyesCluster from '../components/EyesCluster'
+import { useSeo } from '../hooks/useSeo'
 
 /* TODO: swap for the dedicated join-the-team link when it's shared; the
    volunteer form stands in until then. */
@@ -25,6 +26,13 @@ const TEAM_EYES = [
 ]
 
 export default function Team() {
+  useSeo({
+    title: 'Team',
+    description:
+      'Fifteen students based in Lahore working to make life more accessible for the blind community in Pakistan.',
+    path: '/team',
+  })
+
   return (
     <div className="min-h-svh bg-teal px-5 pb-24 pt-28 text-white md:px-10 md:pt-36">
       <div className="mx-auto max-w-3xl">

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import RevealText from '../components/RevealText'
 import { useMotionPrefs } from '../context/MotionPrefs'
+import { useSeo } from '../hooks/useSeo'
 
 export const PLAY_STORE_URL =
   'https://play.google.com/store/apps/details?id=com.saadnizami.offlinedekho&hl=en'
@@ -125,6 +126,13 @@ const STEPS = [
 
 export default function OurApp() {
   const { reduced } = useMotionPrefs()
+
+  useSeo({
+    title: 'Offline Dekho',
+    description:
+      'Offline Dekho is our free Android app: on-device computer vision that describes what is in front of you, with no internet needed.',
+    path: '/app',
+  })
 
   return (
     <div className="min-h-svh bg-night px-5 pb-24 pt-28 text-cream md:px-10 md:pt-36">
