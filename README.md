@@ -3,7 +3,7 @@
 **Not everyone experiences light the same way.**
 
 Lumen.aid is a youth led initiative in Lahore, Pakistan, empowering visually impaired
-communities. We are fifteen students, most of us in our A Levels, and we started this in
+communities. We are twenty three students, most of us in our A Levels, and we started this in
 2024 because the barriers blind people face here are not mostly medical. They are about
 access: tools, schools, streets, work.
 

@@ -78,7 +78,7 @@ Permanent Marker (headlines), Fraunces (serif statements + article body), Poppin
 | `/app` | Offline Dekho: Samsung phone mockup of the real UI, how the on-device CV works |
 | `/articles` | Reading room index + Medium link |
 | `/articles/:slug` | Kindle-style reader: A-/A+ text size, paper/dark toggle, progress bar, prev/next; settings persist |
-| `/team` | Team of fifteen + join section (roles needed: Media, Marketing) |
+| `/team` | Organisational chart of all twenty three of us across seven departments, + join section (roles needed: Media, Marketing) |
 
 ## Content pointers
 
@@ -89,6 +89,12 @@ Permanent Marker (headlines), Fraunces (serif statements + article body), Poppin
   `02-assistive-support.jpg`, `03-partnerships.jpg`, `04-awareness.mp4`), wired in
   `src/sections/Programs.jsx` with alt text alongside.
 - **Impact stats** are in `src/sections/Impact.jsx`; update as fundraisers happen.
+- **The team** lives in `src/content/team.js`: departments in page order, each with its
+  members, `lead: true` on whoever heads it, and an optional `link`. Every count on the page
+  (the h1, each department's headcount, the SEO description) derives from `TEAM_SIZE` and
+  `members.length`, so adding or removing a person is a one-line edit and nothing can go
+  stale. Only heads show a role label; members get theirs as `sr-only` text so the page is
+  not thirteen repetitions of the same word.
 - **Join-the-team link** is `JOIN_URL` in `src/pages/Team.jsx` (currently the volunteer
   form until the dedicated link exists).
 - Favicon (`public/favicon.png`, 64px) and touch icon (`public/apple-touch-icon.png`,
