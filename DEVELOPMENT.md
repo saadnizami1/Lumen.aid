@@ -32,24 +32,33 @@ sitemap all read from it, so changing the domain is a one-line edit.
   the `lumenaid-sitemap` plugin in `vite.config.js`, straight from the route list and
   `ARTICLES`, so new articles appear in it with no manual edit.
 
-DNS lives at Namecheap (Advanced DNS tab, nameservers stay as Namecheap BasicDNS). Add
-`lumenaid.help` and `www.lumenaid.help` in the Vercel project's Settings > Domains first,
-then copy the two records it shows into Namecheap:
+### Hosting and DNS
+
+The site is hosted on **Netlify** (`lumenaid.netlify.app`), auto-deploying from `main`.
+`vercel.json` is kept so the project still deploys to Vercel unchanged, but Netlify is
+what serves production; the SPA fallback it uses is `public/_redirects`.
+
+DNS stays at Namecheap (Advanced DNS tab, nameservers remain Namecheap BasicDNS, which is
+also what keeps Namecheap's free email forwarding available). Two host records:
 
 | Type | Host | Value |
 |---|---|---|
-| A | `@` | the IP on the domain card (`76.76.21.21`, or `216.198.79.1` on newer projects) |
-| CNAME | `www` | the host on the domain card (often a project-specific `*.vercel-dns-0NN.com.`) |
+| ALIAS | `@` | `apex-loadbalancer.netlify.com` |
+| CNAME | `www` | `lumenaid.netlify.app` |
 
-Vercel assigns these per project, so the domain card is the source of truth; copying
-another project's values is the usual cause of "Invalid Configuration". Delete the
-parking records Namecheap ships with (the `@` A record to `162.255.119.36` and the `www`
-CNAME to `parkingpage.namecheap.com`) or the domain keeps resolving to the "for sale"
-page. Set `www` to redirect to the apex in Vercel, since the canonical URLs assume apex.
+Netlify's documented setup for external DNS: ALIAS/ANAME at the apex, falling back to an
+A record to `75.2.60.5` only where the provider has no ALIAS type. Namecheap does have
+one, so prefer ALIAS: it follows Netlify if their load balancer IP ever changes.
+
+Delete the parking records Namecheap ships with (the `@` A record to `162.255.119.36` and
+the `www` CNAME to `parkingpage.namecheap.com`) or the domain keeps resolving to the "for
+sale" page. In Netlify, add both domains under Domain management and set `lumenaid.help`
+as the primary, so `www` redirects to the apex and matches the canonical URLs. Choosing
+`www` as primary instead would mean changing `SITE_URL` in `src/site.js` to match.
 
 Namecheap's free email forwarding (Domain tab > Redirect Email) can point something like
-`hello@lumenaid.help` at the existing Gmail without touching the Vercel records, as long
-as the MX records stay on Namecheap's `mail.privateemail.com` default.
+`hello@lumenaid.help` at the existing Gmail without touching the records above, as long
+as the MX records stay on Namecheap's default.
 
 Note: if the dev server is running when `tailwind.config.js` changes, restart it or you'll
 see "class does not exist" overlay errors.
