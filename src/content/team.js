@@ -16,7 +16,7 @@ export const DEPARTMENTS = [
     executive: true,
     members: [
       { name: 'Saad Nizami', role: 'President & Founder', lead: true },
-      { name: 'Umer Arsalan', role: 'Vice President & Founder', lead: true },
+      { name: 'Umer Arsalan', role: 'President & Founder', lead: true },
       { name: 'Eesa Faisal', role: 'General Secretary', lead: true },
     ],
   },
